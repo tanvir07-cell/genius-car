@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Changing Oil",
+    "price": "$300",
+    "description": "Changing your car’s oil is one of the most fundamental DIY skills you should have for car maintenance or repair.",
+    "img": "https://i.ibb.co/qN086Rj/repair1.png"
+  },
+  {
+    "id": 2,
+    "name": "Changing spark plugs.",
+    "price": "$500",
+    "description": "Changing spark plugs are the tiny devices inside the cylinder that create sparks to ignite the gasoline, ultimately powering your vehicle",
+    "img": "https://i.ibb.co/qs0k9wy/repair2.png"
+  },
+  {
+    "id": 3,
+    "name": " Replacing a headlight or taillight",
+    "price": "$400",
+    "description": "Sometimes only your frame might be broken, which can be just as hazardous. You can change it following the same procedure.",
+    "img": "https://i.ibb.co/Tt4SMNc/repair3.png"
+  }
+]
