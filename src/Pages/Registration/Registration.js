@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { Button, Form } from "react-bootstrap";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import registration from "../../images/images/registration.svg";
 import "./Resgistration.css";
+import auth from "../../Firebase/firebase.init";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import SocialLogin from "../Home/SocialLogin/SocialLogin";
+
 const Registration = () => {
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -13,6 +20,9 @@ const Registration = () => {
     emailError: "",
     passwordError: "",
   });
+
+  const [createUserWithEmailAndPassword, user, loading, hooksError] =
+    useCreateUserWithEmailAndPassword(auth);
 
   const handleEmailChange = (event) => {
     if (/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(event.target.value)) {
@@ -39,22 +49,58 @@ const Registration = () => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
+
+    if (userInfo.email && userInfo.password) {
+      createUserWithEmailAndPassword(userInfo.email, userInfo.password);
+    }
   };
+
+  // showing the backend error:
+  useEffect(() => {
+    if (hooksError) {
+      switch (hooksError?.code) {
+        case "auth/email-already-exists":
+          toast.error("This email already exist! Please provide a new email", {
+            toastId: "id-email-exist",
+          });
+          break;
+
+        case "auth/invalid-email":
+          toast.error(
+            "Invalid Email Provided ! Please Provide a Valid Email Address",
+            { toastId: "id-1" }
+          );
+          break;
+
+        case "auth/invalid-password":
+          toast.error("Wrong Password! Provide a valid Password", {
+            toastId: "id-2",
+          });
+          break;
+
+        default:
+          toast.error("Something Went Wrong", { toastId: "id-3" });
+          break;
+      }
+    }
+  }, [hooksError]);
+
+  if (user) {
+    navigate("/");
+  }
   return (
     <div>
-      <h2 className="text-center text-primary mt-2 mb-5">Please Register</h2>
+      <h2 className="text-center text-primary mt-2 mb-4">Please Register</h2>
       <div className="login">
         <div className="w-50 mx-auto">
           <img src={registration} alt="" className="w-100" />
         </div>
         <Form onSubmit={handleFormSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Your Name</Form.Label>
             <Form.Control type="text" placeholder="Enter Your name" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter email"
@@ -68,8 +114,6 @@ const Registration = () => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-
             <Form.Control
               type="password"
               placeholder="Password"
@@ -97,8 +141,10 @@ const Registration = () => {
               Please Login first
             </Link>
           </p>
+          <SocialLogin></SocialLogin>
         </Form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

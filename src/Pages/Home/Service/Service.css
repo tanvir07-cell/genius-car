@@ -20,13 +20,8 @@
   -ms-border-radius: 10px;
   -o-border-radius: 10px;
 }
-
 .service-description {
   padding: 1.5rem;
 }
-
 @media (max-width: 576px) {
-  .service {
-    width: 300px;
-  }
 }

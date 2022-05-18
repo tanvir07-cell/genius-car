@@ -11,6 +11,18 @@
   content: "❌ ";
 }
 
+.parent-hide-show {
+  position: relative;
+}
+
+.position-hide-show {
+  position: absolute;
+  top: 30%;
+  left: 90%;
+  color: rgb(13, 110, 253);
+  cursor: pointer;
+}
+
 @media (max-width: 576px) {
   .login {
     grid-template-columns: repeat(1, 1fr);

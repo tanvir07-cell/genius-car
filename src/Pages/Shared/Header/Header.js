@@ -1,3 +1,4 @@
+import { signOut } from "firebase/auth";
 import React from "react";
 
 import {
@@ -10,11 +11,14 @@ import {
   NavDropdown,
   Offcanvas,
 } from "react-bootstrap";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
 import DarkMode from "../../../DarkMode/DarkMode";
+import auth from "../../../Firebase/firebase.init";
 import logo from "../../../images/images/logo.png";
 
 const Header = () => {
+  const [user] = useAuthState(auth);
   return (
     <>
       {[false].map((expand) => (
@@ -47,9 +51,20 @@ const Header = () => {
                   </Nav.Link>
                   <Nav.Link href="home#services">Services</Nav.Link>
                   <Nav.Link href="home#experts">Experts</Nav.Link>
-                  <Nav.Link as={Link} to="/login">
-                    Login
-                  </Nav.Link>
+
+                  {user ? (
+                    <button
+                      className="btn btn-danger w-50 mb-5 mt-5"
+                      onClick={() => signOut(auth)}
+                    >
+                      SignOut
+                    </button>
+                  ) : (
+                    <Nav.Link as={Link} to="/login">
+                      Login
+                    </Nav.Link>
+                  )}
+
                   <DarkMode></DarkMode>
                 </Nav>
               </Offcanvas.Body>

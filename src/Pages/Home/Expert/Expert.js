@@ -1,10 +1,11 @@
 import React from "react";
+import "./Expert.css";
 
 const Expert = ({ expert }) => {
   const { name, img } = expert;
   return (
     <div className="col-sm-12 col-md-6 col-lg-4 g-5">
-      <div className="card " style={{ width: "18rem" }}>
+      <div className="card card-device " style={{ width: "18rem" }}>
         <img src={img} class="card-img-top" alt="..." />
         <div class="card-body">
           <h5 class="card-title">Card title</h5>
