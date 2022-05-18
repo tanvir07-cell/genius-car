@@ -2,12 +2,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { BiShow } from "react-icons/bi";
+import { BiShow, BiHide } from "react-icons/bi";
 
 import authentication from "../../images/images/authentication.svg";
 import "./Login.css";
 import { toast, ToastContainer } from "react-toastify";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import {
+  useSendPasswordResetEmail,
+  useSignInWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
 import auth from "../../Firebase/firebase.init";
 import SocialLogin from "../Home/SocialLogin/SocialLogin";
 const Login = () => {
@@ -16,6 +19,7 @@ const Login = () => {
   const location = useLocation();
   const [signInWithEmailAndPassword, user, loading, hooksError] =
     useSignInWithEmailAndPassword(auth);
+  const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
 
   const [userInfo, setUserInfo] = useState({
     email: "",
@@ -58,6 +62,14 @@ const Login = () => {
     } else {
       setUserInfo({ ...userInfo, confirmPass: event.target.value });
       setErrors({ ...errors, passwordError: "" });
+    }
+  };
+
+  // reset password:
+  const resetPassword = async () => {
+    await sendPasswordResetEmail(userInfo.email);
+    if (userInfo.email) {
+      toast(`Sending Email to ${userInfo.email}`, { id: "send-email" });
     }
   };
 
@@ -111,6 +123,8 @@ const Login = () => {
     }
   }, [user, navigate, from]);
 
+  console.log(user);
+
   return (
     <div>
       <h2 className="text-center text-primary mt-2 mb-4">Please Login</h2>
@@ -153,26 +167,45 @@ const Login = () => {
                 onChange={handleConfirmPasswordChange}
               />
 
-              <BiShow
-                className="position-hide-show"
-                onClick={() => setShowPass(!showPass)}
-              ></BiShow>
+              {showPass ? (
+                <BiHide
+                  className="position-hide-show"
+                  onClick={() => setShowPass(!showPass)}
+                ></BiHide>
+              ) : (
+                <BiShow
+                  className="position-hide-show"
+                  onClick={() => setShowPass(!showPass)}
+                ></BiShow>
+              )}
             </div>
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-          </Form.Group>
-          <Button variant="primary" type="submit">
+
+          <Button
+            variant="primary"
+            type="submit"
+            className="d-block mx-auto w-50"
+          >
             Login
           </Button>
           <p className="mt-3">
             New to Genius Car ?
             <Link
-              className="text-danger pe-auto text-decoration-none"
+              className="text-primary pe-auto text-decoration-none"
               to="/register"
               onClick={() => navigate("/register")}
             >
               Please Register
+            </Link>
+          </p>
+          <p className="mt-3">
+            Forget Password ?
+            <Link
+              to=""
+              className="text-primary pe-auto text-decoration-none"
+              onClick={resetPassword}
+            >
+              Reset Password
             </Link>
           </p>
           <SocialLogin></SocialLogin>

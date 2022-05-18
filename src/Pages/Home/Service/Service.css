@@ -19,9 +19,15 @@
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
   -o-border-radius: 10px;
+  padding-top: 1rem;
 }
 .service-description {
   padding: 1.5rem;
 }
+
 @media (max-width: 576px) {
+  .service {
+    width: 80%;
+    margin: 0 auto;
+  }
 }

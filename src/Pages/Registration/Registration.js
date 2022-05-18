@@ -10,6 +10,9 @@ import "react-toastify/dist/ReactToastify.css";
 import SocialLogin from "../Home/SocialLogin/SocialLogin";
 
 const Registration = () => {
+  // for term agree and not agree:
+  const [agree, setAgree] = useState(false);
+
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     email: "",
@@ -22,7 +25,9 @@ const Registration = () => {
   });
 
   const [createUserWithEmailAndPassword, user, loading, hooksError] =
-    useCreateUserWithEmailAndPassword(auth);
+    useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
+
+  console.log(user);
 
   const handleEmailChange = (event) => {
     if (/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(event.target.value)) {
@@ -50,8 +55,9 @@ const Registration = () => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
-    if (userInfo.email && userInfo.password) {
+    if (userInfo.email && userInfo.password && agree) {
       createUserWithEmailAndPassword(userInfo.email, userInfo.password);
+      toast.success(`${userInfo.email} created Successfully`);
     }
   };
 
@@ -88,6 +94,7 @@ const Registration = () => {
   if (user) {
     navigate("/");
   }
+  console.log(user);
   return (
     <div>
       <h2 className="text-center text-primary mt-2 mb-4">Please Register</h2>
@@ -126,15 +133,31 @@ const Registration = () => {
             )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
+            <Form.Check
+              onClick={() => setAgree(!agree)}
+              type="checkbox"
+              label={
+                agree ? (
+                  <span className="text-success">
+                    Accept Genius Car Term & Condition
+                  </span>
+                ) : (
+                  <span className="text-danger">
+                    Accept Genius Car Term & Condition
+                  </span>
+                )
+              }
+            />
           </Form.Group>
-          <Button variant="primary" type="submit">
+
+          <Button variant="primary" type="submit" disabled={!agree}>
             Register
           </Button>
+
           <p className="mt-3">
             Already have an account ?
             <Link
-              className="text-danger pe-auto text-decoration-none"
+              className="text-primary pe-auto text-decoration-none"
               to="/login"
               onClick={() => Navigate("/login")}
             >

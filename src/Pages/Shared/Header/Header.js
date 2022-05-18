@@ -19,6 +19,7 @@ import logo from "../../../images/images/logo.png";
 
 const Header = () => {
   const [user] = useAuthState(auth);
+  console.log(user);
   return (
     <>
       {[false].map((expand) => (
@@ -53,12 +54,21 @@ const Header = () => {
                   <Nav.Link href="home#experts">Experts</Nav.Link>
 
                   {user ? (
-                    <button
-                      className="btn btn-danger w-50 mb-5 mt-5"
-                      onClick={() => signOut(auth)}
-                    >
-                      SignOut
-                    </button>
+                    <div>
+                      <button
+                        className="btn btn-danger w-50 mb-5 mt-5"
+                        onClick={() => signOut(auth)}
+                      >
+                        SignOut
+                      </button>
+                      {user?.displayName ? (
+                        <span className="text-success mx-2">
+                          {user?.displayName}
+                        </span>
+                      ) : (
+                        <span className="text-success mx-2">{user?.email}</span>
+                      )}
+                    </div>
                   ) : (
                     <Nav.Link as={Link} to="/login">
                       Login
