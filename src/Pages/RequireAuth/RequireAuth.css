@@ -3,8 +3,13 @@
   background: #e0e0e0;
   box-shadow: 6px 6px 16px #c5c5c5, -6px -6px 16px #fbfbfb;
   width: 50%;
-  margin: 0 auto;
+  margin: 20vh auto;
   text-align: center;
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+@media (max-width: 576px) {
+  .verify-email {
+    width: 80%;
+  }
 }
