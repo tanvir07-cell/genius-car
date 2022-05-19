@@ -8,6 +8,7 @@ import auth from "../../Firebase/firebase.init";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SocialLogin from "../Home/SocialLogin/SocialLogin";
+import Loading from "../Loading/Loading";
 
 const Registration = () => {
   // for term agree and not agree:
@@ -27,7 +28,9 @@ const Registration = () => {
   const [createUserWithEmailAndPassword, user, loading, hooksError] =
     useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
 
-  console.log(user);
+  if (loading) {
+    <Loading></Loading>;
+  }
 
   const handleEmailChange = (event) => {
     if (/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(event.target.value)) {

@@ -13,6 +13,8 @@ import {
 } from "react-firebase-hooks/auth";
 import auth from "../../Firebase/firebase.init";
 import SocialLogin from "../Home/SocialLogin/SocialLogin";
+import Loading from "../Loading/Loading";
+import PageTitle from "../Shared/PageTitle/PageTitle";
 const Login = () => {
   const [showPass, setShowPass] = useState(false);
   const navigate = useNavigate();
@@ -31,6 +33,10 @@ const Login = () => {
     emailError: "",
     passwordError: "",
   });
+
+  if (loading || sending) {
+    <Loading></Loading>;
+  }
 
   const handleEmailChange = (event) => {
     if (/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(event.target.value)) {
@@ -70,6 +76,10 @@ const Login = () => {
     await sendPasswordResetEmail(userInfo.email);
     if (userInfo.email) {
       toast(`Sending Email to ${userInfo.email}`, { id: "send-email" });
+    } else {
+      toast.error("Please write a proper email address", {
+        id: "send-email-3",
+      });
     }
   };
 
@@ -127,6 +137,8 @@ const Login = () => {
 
   return (
     <div>
+      {/* dynamic page title */}
+      <PageTitle title="Login"></PageTitle>
       <h2 className="text-center text-primary mt-2 mb-4">Please Login</h2>
       <div className="login">
         <div className="w-50 mx-auto">
